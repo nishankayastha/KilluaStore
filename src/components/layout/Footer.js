@@ -5,7 +5,7 @@ const Footer = () => {
         <Fragment>
             <footer className="py-1">
                 <p className="text-center mt-1">
-                    Killua store ©2021 All rights Reserved
+                    Shopping Cart - 2019-2020, All Rights Reserved
                 </p>
             </footer>
         </Fragment>
@@ -13,4 +13,3 @@ const Footer = () => {
 }
 
 export default Footer
- 
