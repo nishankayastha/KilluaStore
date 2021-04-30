@@ -16,7 +16,7 @@ const ProductsList = ({ history }) => {
     const alert = useAlert();
     const dispatch = useDispatch();
 
-    const { loading, error, products } = useSelector(state => state.products);
+    const { loading, error, products=[] } = useSelector(state => state.products);
     const { error: deleteError, isDeleted } = useSelector(state => state.product)
 
     useEffect(() => {

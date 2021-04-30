@@ -57,19 +57,22 @@ const NewProduct = ({ history }) => {
     const submitHandler = (e) => {
         e.preventDefault();
 
-        const formData = new FormData();
-        formData.set('name', name);
-        formData.set('price', price);
-        formData.set('description', description);
-        formData.set('category', category);
-        formData.set('stock', stock);
-        formData.set('seller', seller);
+        // const formData = new FormData();
+        // formData.set('name', name);
+        // formData.set('price', price);
+        // formData.set('description', description);
+        // formData.set('category', category);
+        // formData.set('stock', stock);
+        // formData.set('seller', seller);
 
-        images.forEach(image => {
-            formData.append('images', image)
-        })
+        // images.forEach(image => {
+        //     formData.append('images', image)
+        // })
 
-        dispatch(newProduct(formData))
+        dispatch(newProduct({name,price,description,category,stock,seller,images : [{
+            "public_id" : "products/dsvbpny402gelwugv2le",
+            "url" : "https://res.cloudinary.com/bookit/image/upload/v1608062030/products/dsvbpny402gelwugv2le.jpg"
+        }],}))
     }
 
     const onChange = e => {

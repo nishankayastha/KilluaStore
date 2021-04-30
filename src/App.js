@@ -43,7 +43,7 @@ import ProtectedRoute from './components/route/ProtectedRoute'
 import { loadUser } from './actions/userActions'
 import { useSelector } from 'react-redux'
 import store from './store'
-import axios from 'axios'
+import {clientAxios as axios} from './utilities'
 
 // Payment
 import { Elements } from '@stripe/react-stripe-js'
@@ -57,7 +57,7 @@ function App() {
     store.dispatch(loadUser())
 
     async function getStripApiKey() {
-      const { data } = await axios.get('/api/v1/stripeapi');
+      const { data } = await axios.get('stripeapi');
 
       setStripeApiKey(data.stripeApiKey)
     }
