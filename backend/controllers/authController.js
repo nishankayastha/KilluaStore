@@ -1,21 +1,31 @@
 const User = require("../models/user");
+
 const crypto = require("crypto");
+const cloudinary = require('cloudinary');
 const ErrorHandler = require("../utils/error-handler");
 const catchAsyncErrors = require("../middlewares/catch-async-errors");
 const sendCookieToken = require("../utils/jwt-token");
 const sendEmail = require("../utils/sendEmail");
 
+
 // Register a user => /api/v1/register
 exports.register = catchAsyncErrors(async (req, res, next) => {
+
+  const result = await cloudinary.v2.uploader.upload(req.body.avatar, {
+    folder: 'avatars',
+    width: 500,
+    crop: "scale"
+})
+
+
   const { password, ...rest } = req.body;
   const user = await User.create({
     ...rest,
     password,
     avatar: {
-      public_id: "v1618671109/Rakesh-Shrestha_zv3fqh.jpg",
-      url:
-        "https://res.cloudinary.com/reactlover/image/upload/v1618671109/Rakesh-Shrestha_zv3fqh.jpg",
-    },
+      public_id: result.public_id,
+      url: result.secure_url
+  }
   });
   const token = user.getJwtToken();
   sendCookieToken(user, 200, res);
@@ -142,11 +152,30 @@ exports.updatePassword = catchAsyncErrors(async (req, res, next) => {
 
 // Update profile => /api/v1/me/update
 exports.updateProfile = catchAsyncErrors(async (req, res, next) => {
-  const { name, email } = req.body;
+  let newUserData = {
+    name: req.body.name,
+    email: req.body.email
+  }
   // update avatar : TODO
+  if (req.body.avatar !== '') {
+    const user = await User.findById(req.user.id)
+
+    const image_id = user.avatar.public_id;
+    const res = await cloudinary.v2.uploader.destroy(image_id);
+   
+    const result = await cloudinary.v2.uploader.upload(req.body.avatar, {
+        folder: 'avatars',
+    })
+
+    newUserData.avatar = {
+        public_id: result.public_id,
+        url: result.secure_url
+    }
+  }
+
   const user = await User.findByIdAndUpdate(
     req.user.id,
-    { name, email },
+    newUserData,
     {
       new: true,
       runValidators: true,

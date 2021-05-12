@@ -1,53 +1,46 @@
 import React, { useEffect, useState } from 'react'
 import { BrowserRouter as Router, Route } from 'react-router-dom'
-
-import Header from './components/layout/Header'
-import Footer from './components/layout/Footer'
-
-import Home from './components/Home'
-import ProductDetails from './components/product/ProductDetails'
-
+// Payment
+import { Elements } from '@stripe/react-stripe-js'
+import { loadStripe } from '@stripe/stripe-js'
+import Header from 'components/layout/Header'
+import Footer from 'components/layout/Footer'
+import Home from 'components/Home'
+import ProductDetails from 'components/product/ProductDetails'
 // Cart Imports
-import Cart from './components/cart/Cart'
-import Shipping from './components/cart/Shipping'
-import ConfirmOrder from './components/cart/ConfirmOrder'
-import Payment from './components/cart/Payment'
-import OrderSuccess from './components/cart/OrderSuccess'
-
+import Cart from 'components/cart/Cart'
+import Shipping from 'components/cart/Shipping'
+import ConfirmOrder from 'components/cart/ConfirmOrder'
+import Payment from 'components/cart/Payment'
+import OrderSuccess from 'components/cart/OrderSuccess'
 // Order Imports
-import ListOrders from './components/order/ListOrders'
-import OrderDetails from './components/order/OrderDetails'
-
+import ListOrders from 'components/order/ListOrders'
+import OrderDetails from 'components/order/OrderDetails'
 // Auth or User imports
-import Login from './components/user/Login'
-import Register from './components/user/Register'
-import Profile from './components/user/Profile'
-import UpdateProfile from './components/user/UpdateProfile'
-import UpdatePassword from './components/user/UpdatePassword'
-import ForgotPassword from './components/user/ForgotPassword'
-import NewPassword from './components/user/NewPassword'
-
+import Login from 'components/user/Login'
+import Register from 'components/user/Register'
+import Profile from 'components/user/Profile'
+import UpdateProfile from 'components/user/UpdateProfile'
+import UpdatePassword from 'components/user/UpdatePassword'
+import ForgotPassword from 'components/user/ForgotPassword'
+import NewPassword from 'components/user/NewPassword'
 // Admin Imports
-import Dashboard from './components/admin/Dashboard'
-import ProductsList from './components/admin/ProductsList'
-import NewProduct from './components/admin/NewProduct'
-import UpdateProduct from './components/admin/UpdateProduct'
-import OrdersList from './components/admin/OrdersList'
-import ProcessOrder from './components/admin/ProcessOrder'
-import UsersList from './components/admin/UsersList'
-import UpdateUser from './components/admin/UpdateUser'
-import ProductReviews from './components/admin/ProductReviews'
-
-
-import ProtectedRoute from './components/route/ProtectedRoute'
+import Dashboard from 'components/admin/Dashboard'
+import ProductsList from 'components/admin/ProductsList'
+import NewProduct from 'components/admin/NewProduct'
+import UpdateProduct from 'components/admin/UpdateProduct'
+import OrdersList from 'components/admin/OrdersList'
+import ProcessOrder from 'components/admin/ProcessOrder'
+import UsersList from 'components/admin/UsersList'
+import UpdateUser from 'components/admin/UpdateUser'
+import ProductReviews from 'components/admin/ProductReviews'
+import ProtectedRoute from 'components/route/ProtectedRoute'
+import 'assets/scss/index.scss'
 import { loadUser } from './actions/userActions'
 import { useSelector } from 'react-redux'
 import store from './store'
 import {clientAxios as axios} from './utilities'
 
-// Payment
-import { Elements } from '@stripe/react-stripe-js'
-import { loadStripe } from '@stripe/stripe-js'
 
 function App() {
 
@@ -57,7 +50,7 @@ function App() {
     store.dispatch(loadUser())
 
     async function getStripApiKey() {
-      const { data } = await axios.get('stripeapi');
+      const { data } = await axios.get('/api/v1/stripeapi');
 
       setStripeApiKey(data.stripeApiKey)
     }
@@ -82,9 +75,9 @@ function App() {
           <ProtectedRoute path="/confirm" component={ConfirmOrder} exact />
           <ProtectedRoute path="/success" component={OrderSuccess} />
           {stripeApiKey &&
-            <Elements stripe={loadStripe(stripeApiKey)}>
+            <Elements stripe={loadStripe(stripeApiKey)}> 
               <ProtectedRoute path="/payment" component={Payment} />
-            </Elements>
+            </Elements> 
           }
 
           <Route path="/login" component={Login} />

@@ -6,6 +6,7 @@ import CheckoutSteps from './CheckoutSteps'
 import { useAlert } from 'react-alert'
 import { useDispatch, useSelector } from 'react-redux'
 import { createOrder, clearErrors } from '../../actions/orderActions'
+import { clearAllCartItems } from '../../actions/cartActions'
 
 import { useStripe, useElements, CardNumberElement, CardExpiryElement, CardCvcElement } from '@stripe/react-stripe-js'
 
@@ -23,7 +24,7 @@ const options = {
 }
 
 const Payment = ({ history }) => {
-
+    
     const alert = useAlert();
     const stripe = useStripe();
     const elements = useElements();
@@ -107,6 +108,7 @@ const Payment = ({ history }) => {
                     }
 
                     dispatch(createOrder(order))
+                    dispatch(clearAllCartItems())
 
                     history.push('/success')
                 } else {

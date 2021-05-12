@@ -9,8 +9,10 @@ import { UPDATE_PASSWORD_RESET } from '../../constants/userConstants'
 
 const UpdatePassword = ({ history }) => {
 
-    const [oldPassword, setOldPassword] = useState('')
-    const [password, setPassword] = useState('')
+    const [passwordFields, setPasswordFields] = useState({
+        password:'',
+        oldPassword:''
+    })
 
     const alert = useAlert();
     const dispatch = useDispatch();
@@ -38,12 +40,21 @@ const UpdatePassword = ({ history }) => {
 
     const submitHandler = (e) => {
         e.preventDefault();
+        const {oldPassword, password} = passwordFields;
+        dispatch(updatePassword({
+            password,
+            oldPassword
+        }))
+    }
 
-        const formData = new FormData();
-        formData.set('oldPassword', oldPassword);
-        formData.set('password', password);
 
-        dispatch(updatePassword(formData))
+    const handleInputChange = (e) =>{
+        e.preventDefault();
+        const {name, value} = e.target;
+         setPasswordFields(prevState=> ({
+            ...prevState,
+            [name] : value
+        }))
     }
 
     return (
@@ -55,27 +66,27 @@ const UpdatePassword = ({ history }) => {
                     <form className="shadow-lg" onSubmit={submitHandler}>
                         <h1 className="mt-2 mb-5">Update Password</h1>
                         <div className="form-group">
-                            <label for="old_password_field">Old Password</label>
+                            <label htmlFor="oldPassword">oldPassword</label>
                             <input
                                 type="password"
-                                id="old_password_field"
+                                id="oldPassword"
+                                name="oldPassword"
                                 className="form-control"
-                                value={oldPassword}
-                                onChange={(e) => setOldPassword(e.target.value)}
+                                value={passwordFields.oldPassword}
+                                onChange={handleInputChange}
                             />
                         </div>
-
                         <div className="form-group">
-                            <label for="new_password_field">New Password</label>
+                            <label htmlFor="password"> Password</label>
                             <input
                                 type="password"
-                                id="new_password_field"
+                                id="password"
                                 className="form-control"
-                                value={password}
-                                onChange={(e) => setPassword(e.target.value)}
+                                name="password"
+                                value={passwordFields.password}
+                                onChange={handleInputChange}
                             />
                         </div>
-
                         <button type="submit" className="btn update-btn btn-block mt-4 mb-3" disabled={loading ? true : false} >Update Password</button>
                     </form>
                 </div>

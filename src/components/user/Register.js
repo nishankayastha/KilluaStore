@@ -40,14 +40,14 @@ const Register = ({ history }) => {
     const submitHandler = (e) => {
         e.preventDefault();
        
-        // const formData = new FormData();
-        // formData.set('name', name);
-        // formData.set('email', email);
-        // formData.set('password', password);
+        const formData = new FormData();
+        formData.set('name', name);
+        formData.set('email', email);
+        formData.set('password', password);
         
-        // formData.set('avatar', avatar);
+        formData.set('avatar', avatar);
 
-        dispatch(register({name,email,password}))
+        dispatch(register(formData))
     }
 
     const onChange = e => {
@@ -114,7 +114,7 @@ const Register = ({ history }) => {
                                 onChange={onChange}
                             />
                         </div>
-
+                        {/*NOTE - TODO AVATAR  ON USER INPUT */}
                         <div className='form-group'>
                             <label htmlFor='avatar_upload'>Avatar</label>
                             <div className='d-flex align-items-center'>

@@ -6,11 +6,19 @@ const {
   find,
   update,
   delete: deleteProduct,
+  createProductReview,
+  getProductReviews,
+  getAdminProducts,
+  deleteReview
 } = require("../controllers/ProductController");
 const { isAuthenticatedUser, authorizeRoles } = require("../middlewares/auth");
 
 Router.route("/products").get(getProducts);
 Router.route("/product/:id").get(find);
+
+
+Router.route("/admin/products").get(isAuthenticatedUser,authorizeRoles('admin'),getAdminProducts);
+
 
 Router.route("/admin/product/new").post(
   isAuthenticatedUser,
@@ -20,5 +28,11 @@ Router.route("/admin/product/new").post(
 Router.route("/admin/product/:id")
   .put(isAuthenticatedUser, authorizeRoles("admin"), update)
   .delete(isAuthenticatedUser, deleteProduct);
+
+
+Router.route('/review').put(isAuthenticatedUser, createProductReview)
+Router.route('/reviews').get(isAuthenticatedUser, getProductReviews)
+Router.route('/reviews').delete(isAuthenticatedUser, deleteReview)
+
 
 module.exports = Router;

@@ -50,7 +50,7 @@ const Shipping = ({ history }) => {
                                 required
                             />
                         </div>
-
+                     
                         <div className="form-group">
                             <label htmlFor="city_field">City</label>
                             <input
